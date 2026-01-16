@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATLAS — Arquitetura Digital que Gera Resultado</title>
+    <meta name="description" content="Arquitetor de ecossistemas digitais. Projetamos estruturas digitais completas sem dependência, sem mensalidade forçada, sem aprisionamento.">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cor-fundo: #0a0a0a;
+            --cor-texto: #e8e8e8;
+            --cor-texto-secundario: #9a9a9a;
+            --cor-acento: #00ff88;
+            --cor-acento-alt: #0088ff;
+            --cor-grid: rgba(255, 255, 255, 0.03);
+            --fonte-principal: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            --fonte-display: 'SF Mono', 'Monaco', 'Courier New', monospace;
+        }
+
+        body {
+            font-family: var(--fonte-principal);
+            background: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* GRID DE FUNDO (BLUEPRINT) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--cor-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--cor-grid) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* CONTAINER GERAL */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* HEADER */
+        header {
+            padding: 30px 0;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--cor-acento);
+            font-family: var(--fonte-display);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--cor-acento);
+            border: 1px solid var(--cor-acento);
+            padding: 8px 16px;
+            margin-bottom: 40px;
+            font-weight: 600;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 7vw, 72px);
+            line-height: 1.1;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+
+        .hero h1 span {
+            display: block;
+            color: var(--cor-acento);
+            font-size: clamp(28px, 5vw, 56px);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 2.5vw, 24px);
+            color: var(--cor-texto-secundario);
+            margin-bottom: 50px;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+            font-weight: 300;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s backwards;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--cor-acento);
+            color: var(--cor-fundo);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cor-texto);
+            border: 1px solid var(--cor-texto);
+        }
+
+        .btn-secondary:hover {
+            background: var(--cor-texto);
+            color: var(--cor-fundo);
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 120px 20px;
+            position: relative;
+        }
+
+        .section-tag {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--cor-acento);
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 5vw, 56px);
+            margin-bottom: 60px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        /* O QUE É */
+        .definicao {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .definicao-principal {
+            font-size: clamp(24px, 3vw, 36px);
+            line-height: 1.4;
+            margin-bottom: 40px;
+            color: var(--cor-texto);
+        }
+
+        .definicao-principal strong {
+            color: var(--cor-acento);
+            font-weight: 700;
+        }
+
+        .definicao-secundaria {
+            font-size: 20px;
+            color: var(--cor-texto-secundario);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        /* PILARES */
+        .pilares-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .pilar {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pilar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--cor-acento);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .pilar:hover::before {
+            transform: scaleX(1);
+        }
+
+        .pilar:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(0, 255, 136, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .pilar-numero {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--cor-acento);
+            opacity: 0.3;
+            margin-bottom: 20px;
+            font-family: var(--fonte-display);
+        }
+
+        .pilar h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .pilar p {
+            color: var(--cor-texto-secundario);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .pilar ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .pilar li {
+            color: var(--cor-texto-secundario);
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 15px;
+        }
+
+        .pilar li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--cor-acento);
+        }
+
+        /* O QUE CRIAMOS */
+        .servicos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 60px;
+        }
+
+        .servico-item {
+            background: var(--cor-fundo);
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .servico-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--cor-acento);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .servico-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .servico-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .servico-item h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .servico-item p {
+            font-size: 14px;
+            color: var(--cor-texto-secundario);
+            line-height: 1.6;
+        }
+
+        /* PARA QUEM */
+        .publico-alvo {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .segmentos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .segmento-tag {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: var(--cor-texto-secundario);
+            transition: all 0.3s ease;
+        }
+
+        .segmento-tag:hover {
+            border-color: var(--cor-acento);
+            color: var(--cor-acento);
+        }
+
+        .criterio {
+            font-size: clamp(24px, 3vw, 36px);
+            margin-top: 60px;
+            font-weight: 700;
+            color: var(--cor-texto);
+        }
+
+        .criterio span {
+            color: var(--cor-acento);
+        }
+
+        /* DIFERENCIAIS */
+        .diferenciais-lista {
+            max-width: 800px;
+            margin: 60px auto 0;
+        }
+
+        .diferencial {
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: clamp(18px, 2.5vw, 28px);
+            color: var(--cor-texto);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .diferencial::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--cor-acento);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .diferencial:hover {
+            padding-left: 50px;
+            color: var(--cor-acento);
+        }
+
+        .diferencial:hover::before {
+            opacity: 1;
+        }
+
+        /* MANIFESTO */
+        .manifesto {
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .manifesto-texto {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -1px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .manifesto-texto span {
+            color: var(--cor-acento);
+        }
+
+        /* CTA FINAL */
+        .cta-final {
+            text-align: center;
+            padding: 120px 20px;
+        }
+
+        .cta-final h2 {
+            font-size: clamp(36px, 5vw, 64px);
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .cta-final p {
+            font-size: 20px;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 50px;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 60px 20px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--cor-acento);
+            margin-bottom: 20px;
+            font-family: var(--fonte-display);
+        }
+
+        .footer-texto {
+            color: var(--cor-texto-secundario);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--cor-texto-secundario);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--cor-acento);
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: var(--cor-texto-secundario);
+            opacity: 0.5;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            section {
+                padding: 80px 20px;
+            }
+
+            .pilares-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .servicos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .diferencial {
+                font-size: 20px;
+                padding: 20px 0 20px 30px;
+            }
+
+            .manifesto {
+                padding: 60px 20px;
+            }
+        }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--cor-acento);
+            z-index: 1000;
+            transform-origin: left;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INDICADOR DE SCROLL -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="logo">ATLAS</div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">Arquitetura Digital</span>
+            <h1>
+                Estruturas digitais que<br>
+                <span>vendem, escalam e libertam</span>
+            </h1>
+            <p class="hero-subtitle">
+                Projetamos ecossistemas digitais completos sem dependência, sem mensalidade forçada, sem aprisionamento.
+            </p>
+            <div class="cta-group">
+                <a href="#contato" class="btn btn-primary">Iniciar Projeto</a>
+                <a href="#metodo" class="btn btn-secondary">Ver Método</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- O QUE É O ATLAS -->
+    <section id="sobre">
+        <div class="container">
+            <div class="definicao fade-in">
+                <span class="section-tag">Definição</span>
+                <h2 class="section-title">O que é o Atlas</h2>
+                <p class="definicao-principal">
+                    Atlas <strong>não é uma agência.</strong><br>
+                    Atlas é um <strong>arquiteto de ecossistemas digitais.</strong>
+                </p>
+                <p class="definicao-secundaria">
+                    Projetamos, construímos e integramos estruturas digitais completas para empresas, marcas e pessoas que querem existir com autoridade no digital.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MÉTODO (5 PILARES) -->
+    <section id="metodo">
+        <div class="container">
+            <span class="section-tag">Método Invisível</span>
+            <h2 class="section-title">Como o Atlas funciona</h2>
+            
+            <div class="pilares-grid">
+                <div class="pilar fade-in">
+                    <div class="pilar-numero">01</div>
+                    <h3>Arquitetura</h3>
+                    <p>Nada é aleatório. Cada site, página ou plataforma nasce com:</p>
+                    <ul>
+                        <li>Função</li>
+                        <li>Fluxo</li>
+                        <li>Conversão</li>
+                        <li>Escala</li>
+                    </ul>
+                </div>
+
+                <div class="pilar fade-in">
+                    <div class="pilar-numero">02</div>
+                    <h3>Independência</h3>
+                    <ul>
+                        <li>Sem SaaS engessado</li>
+                        <li>Sem mensalidade obrigatória</li>
+                        <li>Sem refém de plataforma</li>
+                    </ul>
+                    <p style="margin-top: 15px;">O cliente possui o que é criado.</p>
+                </div>
+
+                <div class="pilar fade-in">
+                    <div class="pilar-numero">03</div>
+                    <h3>Velocidade</h3>
+                    <ul>
+                        <li>Demo em minutos</li>
+                        <li>Entrega em horas</li>
+                        <li>Ajustes rápidos</li>
+                    </ul>
+                    <p style="margin-top: 15px;">Atlas materializa ideias rápido.</p>
+                </div>
+
+                <div class="pilar fade-in">
+                    <div class="pilar-numero">04</div>
+                    <h3>Autoridade</h3>
+                    <p>Design, texto e estrutura pensados para:</p>
+                    <ul>
+                        <li>Confiança</li>
+                        <li>Posicionamento</li>
+                        <li>Percepção premium</li>
+                    </ul>
+                </div>
+
+                <div class="pilar fade-in">
+                    <div class="pilar-numero">05</div>
+                    <h3>Escalabilidade</h3>
+                    <p>Tudo nasce pronto para:</p>
+                    <ul>
+                        <li>Crescer</li>
+                        <li>Integrar</li>
+                        <li>Evoluir</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- O QUE CRIAMOS -->
+    <section id="servicos">
+        <div class="container">
+            <span class="section-tag">Entregas</span>
+            <h2 class="section-title">O que o Atlas cria</h2>
+            
+            <div class="servicos-grid">
+                <div class="servico-item fade-in">
+                    <h4>Sites Profissionais</h4>
+                    <p>Presença digital que transmite autoridade e gera conversão.</p>
+                </div>
+                <div class="servico-item fade-in">
+                    <h4>Plataformas Próprias</h4>
+                    <p>Estruturas independentes, sem dependência de terceiros.</p>
+                </div>
+                <div class="servico-item fade-in">
+                    <h4>Apps Web</h4>
+                    <p>Aplicações funcionais que resolvem problemas reais.</p>
+                </div>
+                <div class="servico-item fade-in">
+                    <h4>Funis de Venda</h4>
+                    <p>Jornadas estratégicas que convertem visitantes em clientes.</p>
+                </div>
+                <div class="servico-item fade-in">
+                    <h4>Branding & Identidade</h4>
+                    <p>Marca visual que posiciona e diferencia.</p>
+                </div>
+                <div class="servico-item fade-in">
+                    <h4>Marketing Pessoal</h4>
+                    <p>Estruturas digitais para autoridade individual.</p>
+                </div>
+                <div class="servico-item fade-in">
+                    <h4>Estruturas de Conversão</h4>
+                    <p>Páginas e fluxos focados em resultado.</p>
+                </div>
+                <div class="servico-item fade-in">
+                    <h4>Modelos Premium</h4>
+                    <p>Negócios digitais de alto valor percebido.</p>
+                </div>
+                <div class="servico-item fade-in">
+                    <h4>Ecossistemas Integrados</h4>
+                    <p>Estruturas completas que trabalham em conjunto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARA QUEM -->
+    <section id="publico">
+        <div class="container">
+            <div class="publico-alvo fade-in">
+                <span class="section-tag">Alcance</span>
+                <h2 class="section-title">Para quem é o Atlas</h2>
+                
+                <div class="segmentos">
+                    <span class="segmento-tag">Restaurantes & Delivery</span>
+                    <span class="segmento-tag">Negócios Locais</span>
+                    <span class="segmento-tag">Profissionais Liberais</span>
+                    <span class="segmento-tag">Criadores de Conteúdo</span>
+                    <span class="segmento-tag">Mentores & Coaches</span>
+                    <span class="segmento-tag">Clínicas & Terapias</span>
+                    <span class="segmento-tag">Startups</span>
+                    <span class="segmento-tag">E-commerce</span>
+                    <span class="segmento-tag">Eventos</span>
+                    <span class="segmento-tag">Educação Online</span>
+                    <span class="segmento-tag">Produtos Físicos</span>
+                    <span class="segmento-tag">Serviços Premium</span>
+                    <span class="segmento-tag">Marca Pessoal</span>
+                </div>
+
+                <p class="criterio">
+                    O critério não é o segmento.<br>
+                    O critério é <span>ambição digital.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIFERENCIAIS -->
+    <section id="diferenciais">
+        <div class="container">
+            <span class="section-tag">Argumentos-Arma</span>
+            <h2 class="section-title">O que diferencia o Atlas</h2>
+            
+            <div class="diferenciais-lista">
+                <div class="diferencial fade-in">Não faço site. Projeto estruturas digitais.</div>
+                <div class="diferencial fade-in">Não prendo cliente em mensalidade.</div>
+                <div class="diferencial fade-in">Não uso layout engessado.</div>
+                <div class="diferencial fade-in">Você pode sair quando quiser — o site continua seu.</div>
+                <div class="diferencial fade-in">Linktree não constrói autoridade.</div>
+                <div class="diferencial fade-in">Plataforma própria vale mais que perfil bonito.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="manifesto fade-in">
+        <div class="container">
+            <p class="manifesto-texto">
+                Atlas projeta o <span>invisível</span> que sustenta o <span>digital visível</span>.
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section id="contato" class="cta-final">
+        <div class="container fade-in">
+            <h2>Pronto para construir<br>sua estrutura digital?</h2>
+            <p>Arquitetura digital que gera resultado.</p>
+            <div class="cta-group">
+                <a href="https://wa.me/557192356995?text=Quero%20conhecer%20o%20Atlas" class="btn btn-primary" target="_blank">Falar com Atlas</a>
+                <a href="mailto:atlasgodtier@gmail.com" class="btn btn-secondary">Enviar E-mail</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">ATLAS</div>
+            <p class="footer-texto">Arquitetor de ecossistemas digitais</p>
+            <div class="footer-links">
+                <a href="#sobre">Sobre</a>
+                <a href="#metodo">Método</a>
+                <a href="#servicos">Serviços</a>
+                <a href="#contato">Contato</a>
+            </div>
+            <p class="copyright">© 2024 Atlas. Estrutura gera autoridade.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // SCROLL INDICATOR
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            scrollIndicator.style.width = scrolled + '%';
+        });
+
+        // INTERSECTION OBSERVER (ANIMAÇÕES)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // SMOOTH SCROLL
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
